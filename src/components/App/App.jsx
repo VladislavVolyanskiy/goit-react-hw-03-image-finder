@@ -124,14 +124,12 @@ export class App extends Component {
       this.state;
     return (
       <div className={css.App}>
-        <div>
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 2500,
-            }}
-          />
-        </div>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 2500,
+          }}
+        />
         {isLoading && <Loader />}
         <SearchBar onSubmit={this.handleFormSubmit} />
         {images.length > 0 && (
