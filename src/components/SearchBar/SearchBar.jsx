@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import toast from 'react-hot-toast';
 
-import css from './Searchbar.module.css';
+import css from './SearchBar.module.css';
 import { ImSearch } from 'react-icons/im';
 
 export class SearchBar extends Component {
@@ -17,7 +18,9 @@ export class SearchBar extends Component {
     event.preventDefault();
 
     if (this.state.searchQuery.trim() === '') {
-      console.log('Type something in the search field');
+      toast('Type something in the search field', {
+        icon: '👏',
+      });
       return;
     }
 
@@ -26,14 +29,14 @@ export class SearchBar extends Component {
   };
   render() {
     return (
-      <header className={css.searchbar}>
-        <form className={css.searchForm} onSubmit={this.handleSubmit}>
-          <button type="submit" className={css.searchFormButton}>
-            <ImSearch className={css.searchImg} />
+      <header className={css.Searchbar}>
+        <form className={css.SearchForm} onSubmit={this.handleSubmit}>
+          <button type="submit" className={css.SearchFormButton}>
+            <ImSearch className={css.SearchImg} />
           </button>
 
           <input
-            className={css.searchFormInput}
+            className={css.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus

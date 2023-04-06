@@ -1,7 +1,8 @@
 import { Component } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-// import { SearchBar } from '../SearchBar/SearchBar';
+import { SearchBar } from '../SearchBar/SearchBar';
 import { Loader } from '../Loader/Loader';
 import { Button } from '../Button/Button';
 import { Modal } from '../Modal/Modal';
@@ -32,7 +33,8 @@ export class App extends Component {
     const prevPage = prevState.page;
     const newPage = this.state.page;
 
-    if (prevQuery !== newQuery || prevPage !== newPage) this.onFetchDataHandle;
+    if (prevQuery !== newQuery || prevPage !== newPage)
+      this.onFetchDataHandle();
   };
 
   handleFormSubmit = searchQuery => {
@@ -49,8 +51,8 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  result = response => {
-    return response.map(({ id, tags, largeImageURL, webformatURL }) => ({
+  result = data => {
+    return data.map(({ id, tags, largeImageURL, webformatURL }) => ({
       id,
       tags,
       largeImageURL,
@@ -66,7 +68,9 @@ export class App extends Component {
 
       if (totalHits === 0) {
         this.setState({ status: STATUS.IDLE });
-        // return toast.warn('No images on your query!');
+        return toast('No images found!', {
+          icon: '🙈',
+        });
       }
 
       const newImages = this.result(hits);
@@ -85,7 +89,9 @@ export class App extends Component {
       });
     } catch (error) {
       this.setState({ error, status: STATUS.REJECTED });
-      // toast.error('This is an error!');
+      console.log(error.message);
+      toast.error('This is an error!');
+      console.log(error);
     } finally {
       this.setState({ isLoading: false, status: STATUS.IDLE });
     }
@@ -118,6 +124,14 @@ export class App extends Component {
       this.state;
     return (
       <div className={css.App}>
+        <div>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 2500,
+            }}
+          />
+        </div>
         {isLoading && <Loader />}
         <SearchBar onSubmit={this.handleFormSubmit} />
         {images.length > 0 && (
@@ -127,7 +141,7 @@ export class App extends Component {
           ></ImageGallery>
         )}
         {status === 'pending' && <Loader />}
-        {this.isShowButtonLoadMore() && (
+        {this.isLoadMoreBtnVisible() && (
           <Button onLoadMore={this.loadMore}></Button>
         )}
         {showModal && (
