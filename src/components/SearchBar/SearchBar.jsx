@@ -19,13 +19,15 @@ export class SearchBar extends Component {
 
     if (this.state.searchQuery.trim() === '') {
       toast('Type something in the search field', {
-        icon: '👏',
+        icon: '👋',
       });
       return;
     }
 
     this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
+
+    // input reset is now disabled
+    // this.setState({ searchQuery: '' });
   };
   render() {
     return (

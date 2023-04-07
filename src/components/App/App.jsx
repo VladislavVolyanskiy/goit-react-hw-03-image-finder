@@ -38,6 +38,11 @@ export class App extends Component {
   };
 
   handleFormSubmit = searchQuery => {
+    if (searchQuery === this.state.searchQuery) {
+      return toast('Pictures on this query have already been requested!', {
+        icon: '⚠️',
+      });
+    }
     this.setState({
       searchQuery,
       page: 1,
@@ -89,7 +94,6 @@ export class App extends Component {
       });
     } catch (error) {
       this.setState({ error, status: STATUS.REJECTED });
-      console.log(error.message);
       toast.error('This is an error!');
       console.log(error);
     } finally {
